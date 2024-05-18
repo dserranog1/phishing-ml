@@ -8,6 +8,7 @@ from requests import HTTPError, RequestException
 from rest_framework.views import APIView
 
 from api.services.web_scrape import get_website_features
+from api.services.ml_model import predict_with_model
 
 
 class PredictView(APIView):
@@ -17,7 +18,10 @@ class PredictView(APIView):
             return HttpResponseBadRequest("URL is required")
         try:
             features = get_website_features(url)
-            return JsonResponse({"url": url, "is_phising": True, "probability": 99})
+            is_phishing, probability = predict_with_model(features=features)
+            return JsonResponse(
+                {"url": url, "is_phising": is_phishing, "probability": probability}
+            )
         except HTTPError as e:
             return HttpResponse(
                 f"{e.response.reason} for url {e.response.url}",
@@ -25,8 +29,8 @@ class PredictView(APIView):
             )
         except RequestException as e:
             return HttpResponseBadRequest(e)
-        except Exception as _:
-            return HttpResponseServerError()
+        except Exception as e:
+            return HttpResponseServerError(e)
 
     def get(self, request):
         return HttpResponse("Using a very cool model!", 200)
