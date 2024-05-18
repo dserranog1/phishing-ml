@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "phish-django-ml"
+version = "0.1.0"
+description = ""
+authors = ["Daniel Serrano <dserranog@unal.edu.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+scikit-learn = "^1.4.2"
+django = "4.2"
+djangorestframework = "^3.15.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
