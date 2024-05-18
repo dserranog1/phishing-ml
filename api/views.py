@@ -30,7 +30,11 @@ class PredictView(APIView):
         except RequestException as e:
             return HttpResponseBadRequest(e)
         except Exception as e:
-            return HttpResponseServerError(e)
+            print(e)
+            return HttpResponseServerError("Internal server error")
 
-    def get(self, request):
-        return HttpResponse("Using a very cool model!", 200)
+    def get(self, _):
+        return HttpResponse(
+            "V1: Using tuned pre trained Random Forest Classifier. Refer to the docs for more info",
+            200,
+        )
